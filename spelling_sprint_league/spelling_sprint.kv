@@ -1,0 +1,1497 @@
+#:kivy 2.1
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FadeTransition  kivy.uix.screenmanager.FadeTransition
+#:import dp              kivy.metrics.dp
+#:import sp              kivy.metrics.sp
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REUSABLE STYLED BUTTONS
+# ─────────────────────────────────────────────────────────────────────────────
+
+<RoundedButton@Button>:
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (0, 0.85, 1, 1) if self.state == 'normal' else (0, 0.6, 0.78, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+
+<DangerButton@Button>:
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (1, 0.32, 0.32, 1) if self.state == 'normal' else (0.8, 0.1, 0.1, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+
+<GreenButton@Button>:
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (0, 0.78, 0.33, 1) if self.state == 'normal' else (0, 0.55, 0.22, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+
+<GoldButton@Button>:
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (1, 0.84, 0, 1) if self.state == 'normal' else (0.8, 0.65, 0, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+
+<SectionCard@BoxLayout>:
+    orientation: 'vertical'
+    padding: dp(16)
+    spacing: dp(8)
+    canvas.before:
+        Color:
+            rgba: 0.08, 0.14, 0.25, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(16)]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SPLASH SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<SplashScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(40)
+        spacing: dp(20)
+
+        Widget:
+            size_hint_y: 0.25
+
+        Image:
+            source: 'assets/logo.png'
+            size_hint_y: None
+            height: dp(140)
+            fit_mode: 'contain'
+            allow_stretch: True
+
+        Label:
+            text: 'Spelling Sprint'
+            font_size: sp(32)
+            bold: True
+            color: 0, 0.85, 1, 1
+            size_hint_y: None
+            height: dp(44)
+
+        Label:
+            text: 'LEAGUE'
+            font_size: sp(18)
+            bold: True
+            color: 1, 0.84, 0, 1
+            size_hint_y: None
+            height: dp(30)
+
+        Widget:
+            size_hint_y: 0.1
+
+        Label:
+            id: loading_label
+            text: 'Loading...'
+            font_size: sp(14)
+            color: 0.5, 0.6, 0.7, 1
+
+        Widget:
+            size_hint_y: 0.25
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MAIN MENU
+# ─────────────────────────────────────────────────────────────────────────────
+
+<MenuScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(24)
+            spacing: dp(14)
+            size_hint_y: None
+            height: self.minimum_height
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(56)
+                Label:
+                    text: '\u26a1 Spelling Sprint League'
+                    font_size: sp(20)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+                    halign: 'left'
+                    text_size: self.size
+                    valign: 'center'
+                Label:
+                    id: rank_badge
+                    text: 'Bronze'
+                    font_size: sp(13)
+                    color: 0.8, 0.55, 0.2, 1
+                    halign: 'right'
+                    text_size: self.size
+                    valign: 'center'
+                    size_hint_x: 0.35
+
+            Label:
+                text: 'PLAY'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(22)
+                halign: 'left'
+                text_size: self.size
+
+            RoundedButton:
+                text: 'Sprint Mode  (60 sec)'
+                font_size: sp(18)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(62)
+                on_release: root.go_sprint()
+
+            RoundedButton:
+                text: 'League Mode'
+                font_size: sp(18)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(62)
+                on_release: root.go_league()
+
+            RoundedButton:
+                text: 'Practice Mode'
+                font_size: sp(18)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(62)
+                on_release: root.go_practice()
+
+            Label:
+                text: 'MULTIPLAYER'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(22)
+                halign: 'left'
+                text_size: self.size
+
+            GreenButton:
+                text: 'Local WiFi Race'
+                font_size: sp(18)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(62)
+                on_release: root.go_multiplayer()
+
+            GoldButton:
+                text: 'Ghost Race'
+                font_size: sp(18)
+                bold: True
+                color: 0, 0, 0, 1
+                size_hint_y: None
+                height: dp(62)
+                on_release: root.go_ghost()
+
+            Label:
+                text: 'PROFILE'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(22)
+                halign: 'left'
+                text_size: self.size
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(54)
+                spacing: dp(10)
+
+                RoundedButton:
+                    text: 'Stats'
+                    font_size: sp(16)
+                    color: 1, 1, 1, 1
+                    on_release: root.go_stats()
+
+                RoundedButton:
+                    text: 'League'
+                    font_size: sp(16)
+                    color: 1, 1, 1, 1
+                    on_release: root.go_league_rank()
+
+                RoundedButton:
+                    text: 'Settings'
+                    font_size: sp(16)
+                    color: 1, 1, 1, 1
+                    on_release: root.go_settings()
+
+            Widget:
+                size_hint_y: None
+                height: dp(16)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SOLO GAME SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<SoloGameScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(16)
+        spacing: dp(10)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(8)
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.28
+                Label:
+                    id: timer_label
+                    text: '60'
+                    font_size: sp(28)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+                Label:
+                    text: 'TIME'
+                    font_size: sp(10)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.28
+                Label:
+                    id: score_label
+                    text: '0'
+                    font_size: sp(28)
+                    bold: True
+                    color: 1, 0.84, 0, 1
+                Label:
+                    text: 'SCORE'
+                    font_size: sp(10)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.22
+                Label:
+                    id: streak_label
+                    text: 'x1.0'
+                    font_size: sp(20)
+                    bold: True
+                    color: 1, 0.45, 0, 1
+                Label:
+                    text: 'STREAK'
+                    font_size: sp(10)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.22
+                Label:
+                    id: accuracy_label
+                    text: '100%'
+                    font_size: sp(18)
+                    bold: True
+                    color: 0, 0.78, 0.33, 1
+                Label:
+                    text: 'ACC'
+                    font_size: sp(10)
+                    color: 0.5, 0.6, 0.7, 1
+
+        # Timer bar — updated from Python
+        Widget:
+            id: timer_bar
+            size_hint_y: None
+            height: dp(10)
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(120)
+
+            Label:
+                id: mode_label
+                text: 'SPRINT'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(18)
+
+            Label:
+                id: target_word_label
+                text: 'Get ready...'
+                font_size: sp(48)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'center'
+                text_size: self.size
+
+        Label:
+            id: words_done_label
+            text: '0 words'
+            font_size: sp(14)
+            color: 0.5, 0.6, 0.7, 1
+            size_hint_y: None
+            height: dp(24)
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(78)
+            TextInput:
+                id: word_input
+                hint_text: 'Type here...'
+                font_size: sp(28)
+                background_color: 0, 0, 0, 0
+                foreground_color: 1, 1, 1, 1
+                cursor_color: 0, 0.85, 1, 1
+                hint_text_color: 0.3, 0.4, 0.5, 1
+                multiline: False
+                size_hint_y: None
+                height: dp(50)
+                on_text: root.on_input_text(self, self.text)
+
+        Label:
+            id: acc_tier_label
+            text: 'Perfect'
+            font_size: sp(14)
+            bold: True
+            color: 1, 0.84, 0, 1
+            size_hint_y: None
+            height: dp(32)
+
+        Widget:
+            size_hint_y: 1
+
+        DangerButton:
+            text: 'Quit Game'
+            font_size: sp(14)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.quit_game()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCAL MULTIPLAYER HUB
+# ─────────────────────────────────────────────────────────────────────────────
+
+<LocalMultiplayerHubScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(12)
+
+        Label:
+            text: 'Local WiFi Race'
+            font_size: sp(24)
+            bold: True
+            color: 0, 0.85, 1, 1
+            size_hint_y: None
+            height: dp(42)
+
+        Label:
+            id: wifi_status_label
+            text: 'Network: Local WiFi'
+            font_size: sp(13)
+            color: 0.6, 0.7, 0.8, 1
+            size_hint_y: None
+            height: dp(22)
+
+        Label:
+            id: connection_status_label
+            text: 'Ready to play'
+            font_size: sp(13)
+            color: 0.4, 0.85, 0.4, 1
+            size_hint_y: None
+            height: dp(22)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(36)
+            Label:
+                text: 'Game Type:'
+                font_size: sp(14)
+                color: 0.7, 0.7, 0.7, 1
+                size_hint_x: 0.4
+            Label:
+                id: game_type_badge
+                text: 'Not selected'
+                font_size: sp(15)
+                bold: True
+                color: 0, 0.85, 1, 1
+                size_hint_x: 0.6
+
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(100)
+
+            SectionCard:
+                Label:
+                    id: slot1_label
+                    text: 'You'
+                    font_size: sp(15)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+
+            SectionCard:
+                Label:
+                    id: slot2_label
+                    text: 'Empty'
+                    font_size: sp(15)
+                    color: 0.4, 0.5, 0.6, 1
+
+            SectionCard:
+                Label:
+                    id: slot3_label
+                    text: 'Empty'
+                    font_size: sp(15)
+                    color: 0.4, 0.5, 0.6, 1
+
+            SectionCard:
+                Label:
+                    id: slot4_label
+                    text: 'Empty'
+                    font_size: sp(15)
+                    color: 0.4, 0.5, 0.6, 1
+
+        GreenButton:
+            text: 'Host Game'
+            font_size: sp(18)
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(60)
+            on_release: root.show_host_type_selector()
+
+        RoundedButton:
+            text: 'Join Game (Auto-discover)'
+            font_size: sp(18)
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(60)
+            on_release: root.discover_hosts()
+
+        RoundedButton:
+            text: 'Enter IP Manually'
+            font_size: sp(14)
+            color: 0.8, 0.8, 0.8, 1
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.show_manual_ip_dialog()
+
+        GreenButton:
+            id: start_race_btn
+            text: 'Start Race'
+            font_size: sp(18)
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(58)
+            opacity: 0
+            disabled: True
+            on_release: root.start_race()
+
+        Label:
+            id: ip_display
+            text: ''
+            font_size: sp(12)
+            color: 0.5, 0.6, 0.7, 1
+            size_hint_y: None
+            height: dp(22)
+
+        Widget:
+            size_hint_y: 1
+
+        DangerButton:
+            text: 'Back'
+            font_size: sp(14)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.go_back()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCAL MULTIPLAYER GAME SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<LocalMultiplayerGameScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(14)
+        spacing: dp(8)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(56)
+            spacing: dp(8)
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    id: mp_timer_label
+                    text: '60'
+                    font_size: sp(26)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+                Label:
+                    text: 'TIME'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    id: mp_score_label
+                    text: '0'
+                    font_size: sp(26)
+                    bold: True
+                    color: 1, 0.84, 0, 1
+                Label:
+                    text: 'SCORE'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    id: mp_rank_label
+                    text: '1st'
+                    font_size: sp(22)
+                    bold: True
+                    color: 1, 0.84, 0, 1
+                Label:
+                    text: 'RANK'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    id: mp_accuracy_label
+                    text: '100%'
+                    font_size: sp(18)
+                    bold: True
+                    color: 0, 0.78, 0.33, 1
+                Label:
+                    text: 'ACC'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(90)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(6)
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(22)
+                    spacing: dp(8)
+                    Label:
+                        id: opp1_name
+                        text: '---'
+                        font_size: sp(12)
+                        size_hint_x: 0.3
+                        color: 0.8, 0.8, 0.8, 1
+                    Widget:
+                        id: opp1_bar
+                        size_hint_x: 0.55
+                    Label:
+                        id: opp1_acc
+                        text: ''
+                        font_size: sp(11)
+                        size_hint_x: 0.15
+                        color: 0.6, 0.9, 0.6, 1
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(22)
+                    spacing: dp(8)
+                    Label:
+                        id: opp2_name
+                        text: '---'
+                        font_size: sp(12)
+                        size_hint_x: 0.3
+                        color: 0.8, 0.8, 0.8, 1
+                    Widget:
+                        id: opp2_bar
+                        size_hint_x: 0.55
+                    Label:
+                        id: opp2_acc
+                        text: ''
+                        font_size: sp(11)
+                        size_hint_x: 0.15
+                        color: 0.6, 0.9, 0.6, 1
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(22)
+                    spacing: dp(8)
+                    Label:
+                        id: opp3_name
+                        text: '---'
+                        font_size: sp(12)
+                        size_hint_x: 0.3
+                        color: 0.8, 0.8, 0.8, 1
+                    Widget:
+                        id: opp3_bar
+                        size_hint_x: 0.55
+                    Label:
+                        id: opp3_acc
+                        text: ''
+                        font_size: sp(11)
+                        size_hint_x: 0.15
+                        color: 0.6, 0.9, 0.6, 1
+
+        Label:
+            id: race_status_label
+            text: 'Get ready!'
+            font_size: sp(14)
+            bold: True
+            color: 0, 0.85, 1, 1
+            size_hint_y: None
+            height: dp(28)
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(110)
+            Label:
+                id: mp_target_label
+                text: '...'
+                font_size: sp(44)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'center'
+                text_size: self.size
+
+        Widget:
+            size_hint_y: 1
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(72)
+            TextInput:
+                id: mp_word_input
+                hint_text: 'Type here...'
+                font_size: sp(26)
+                background_color: 0, 0, 0, 0
+                foreground_color: 1, 1, 1, 1
+                cursor_color: 0, 0.85, 1, 1
+                hint_text_color: 0.3, 0.4, 0.5, 1
+                multiline: False
+                size_hint_y: None
+                height: dp(46)
+                on_text: root.on_input_text(self, self.text)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GHOST RACE HUB
+# ─────────────────────────────────────────────────────────────────────────────
+
+<GhostRaceHubScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(14)
+
+        Label:
+            text: 'Ghost Race'
+            font_size: sp(26)
+            bold: True
+            color: 0.75, 0.4, 1, 1
+            size_hint_y: None
+            height: dp(44)
+
+        GoldButton:
+            text: 'Race Your Best Ghost'
+            font_size: sp(18)
+            bold: True
+            color: 0, 0, 0, 1
+            size_hint_y: None
+            height: dp(62)
+            on_release: root.race_best_ghost()
+
+        Label:
+            text: 'YOUR GHOSTS'
+            font_size: sp(11)
+            color: 0.5, 0.6, 0.7, 1
+            size_hint_y: None
+            height: dp(24)
+
+        ScrollView:
+            size_hint_y: 0.5
+            BoxLayout:
+                id: ghost_list_container
+                orientation: 'vertical'
+                spacing: dp(8)
+                size_hint_y: None
+                height: self.minimum_height
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(12)
+            RoundedButton:
+                text: 'Import Ghost'
+                font_size: sp(14)
+                color: 1, 1, 1, 1
+                on_release: root.import_ghost()
+            RoundedButton:
+                text: 'Community Ghosts'
+                font_size: sp(14)
+                color: 1, 1, 1, 1
+                on_release: root.browse_community_ghosts()
+
+        Widget:
+            size_hint_y: 1
+
+        DangerButton:
+            text: 'Back'
+            font_size: sp(14)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.go_back()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GHOST RACE GAME SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<GhostRaceGameScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(16)
+        spacing: dp(10)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(56)
+            spacing: dp(10)
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    id: ghost_timer_label
+                    text: '60'
+                    font_size: sp(26)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+                Label:
+                    text: 'TIME'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+                Label:
+                    id: ghost_my_score_label
+                    text: '0'
+                    font_size: sp(22)
+                    bold: True
+                    color: 0, 0.85, 1, 1
+                Label:
+                    text: 'YOUR SCORE'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+                Label:
+                    id: ghost_score_label
+                    text: '0'
+                    font_size: sp(22)
+                    bold: True
+                    italic: True
+                    color: 0.75, 0.4, 1, 1
+                Label:
+                    text: 'GHOST SCORE'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.15
+                Label:
+                    id: ghost_my_acc_label
+                    text: '100%'
+                    font_size: sp(16)
+                    bold: True
+                    color: 0, 0.78, 0.33, 1
+                Label:
+                    text: 'ACC'
+                    font_size: sp(9)
+                    color: 0.5, 0.6, 0.7, 1
+
+        # Progress bars — drawn from Python
+        SectionCard:
+            size_hint_y: None
+            height: dp(72)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(8)
+                BoxLayout:
+                    spacing: dp(8)
+                    Label:
+                        text: 'YOU'
+                        font_size: sp(11)
+                        color: 0, 0.85, 1, 1
+                        size_hint_x: 0.15
+                    Widget:
+                        id: my_progress_bar
+                        size_hint_x: 0.85
+                BoxLayout:
+                    spacing: dp(8)
+                    Label:
+                        text: 'GHOST'
+                        font_size: sp(11)
+                        color: 0.75, 0.4, 1, 1
+                        size_hint_x: 0.15
+                    Widget:
+                        id: ghost_progress_bar
+                        size_hint_x: 0.85
+
+        Label:
+            id: ghost_status_label
+            text: 'Racing against ghost...'
+            font_size: sp(15)
+            bold: True
+            color: 0.75, 0.4, 1, 1
+            size_hint_y: None
+            height: dp(28)
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(110)
+            Label:
+                id: ghost_target_label
+                text: '...'
+                font_size: sp(44)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'center'
+                text_size: self.size
+
+        Widget:
+            size_hint_y: 1
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(72)
+            TextInput:
+                id: ghost_word_input
+                hint_text: 'Type here...'
+                font_size: sp(26)
+                background_color: 0, 0, 0, 0
+                foreground_color: 1, 1, 1, 1
+                cursor_color: 0.75, 0.4, 1, 1
+                hint_text_color: 0.3, 0.4, 0.5, 1
+                multiline: False
+                size_hint_y: None
+                height: dp(46)
+                on_text: root.on_input_text(self, self.text)
+
+        DangerButton:
+            text: 'Quit'
+            font_size: sp(14)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(40)
+            on_release: root.quit_game()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# RESULT SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<ResultScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(24)
+            spacing: dp(16)
+            size_hint_y: None
+            height: self.minimum_height
+
+            Label:
+                id: result_title_label
+                text: 'Race Complete!'
+                font_size: sp(28)
+                bold: True
+                color: 1, 0.84, 0, 1
+                size_hint_y: None
+                height: dp(44)
+
+            SectionCard:
+                size_hint_y: None
+                height: dp(220)
+                GridLayout:
+                    cols: 2
+                    spacing: dp(10)
+
+                    Label:
+                        text: 'Words:'
+                        font_size: sp(16)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: res_words_label
+                        text: '---'
+                        font_size: sp(18)
+                        bold: True
+                        color: 1, 1, 1, 1
+
+                    Label:
+                        text: 'WPM:'
+                        font_size: sp(16)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: res_wpm_label
+                        text: '---'
+                        font_size: sp(18)
+                        bold: True
+                        color: 0, 0.85, 1, 1
+
+                    Label:
+                        text: 'Accuracy:'
+                        font_size: sp(16)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: res_accuracy_label
+                        text: '---'
+                        font_size: sp(18)
+                        bold: True
+                        color: 0, 0.78, 0.33, 1
+
+                    Label:
+                        text: 'Score:'
+                        font_size: sp(16)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: res_score_label
+                        text: '---'
+                        font_size: sp(22)
+                        bold: True
+                        color: 1, 0.84, 0, 1
+
+                    Label:
+                        text: 'Accuracy Tier:'
+                        font_size: sp(16)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: res_tier_label
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 0, 0.78, 0.33, 1
+
+            Label:
+                id: res_rank_label
+                text: ''
+                font_size: sp(16)
+                color: 1, 0.84, 0, 1
+                size_hint_y: None
+                height: dp(28)
+                bold: True
+
+            Label:
+                id: res_ghost_save_label
+                text: ''
+                font_size: sp(13)
+                color: 0.75, 0.4, 1, 1
+                size_hint_y: None
+                height: dp(22)
+
+            GreenButton:
+                id: save_ghost_btn
+                text: 'Save as Ghost'
+                font_size: sp(16)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(52)
+                on_release: root.save_ghost()
+
+            RoundedButton:
+                text: 'Play Again'
+                font_size: sp(16)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(52)
+                on_release: root.play_again()
+
+            DangerButton:
+                text: 'Main Menu'
+                font_size: sp(16)
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(52)
+                on_release: root.go_menu()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MULTIPLAYER RESULT SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<MultiplayerResultScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(24)
+            spacing: dp(14)
+            size_hint_y: None
+            height: self.minimum_height
+
+            Label:
+                id: mp_result_title
+                text: 'Race Finished!'
+                font_size: sp(26)
+                bold: True
+                color: 1, 0.84, 0, 1
+                size_hint_y: None
+                height: dp(44)
+
+            BoxLayout:
+                id: podium_container
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(120)
+                spacing: dp(10)
+
+            SectionCard:
+                size_hint_y: None
+                height: dp(60)
+                Label:
+                    text: 'See podium above for final standings'
+                    font_size: sp(14)
+                    color: 0.7, 0.7, 0.7, 1
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(54)
+                spacing: dp(12)
+                GreenButton:
+                    text: 'Rematch'
+                    font_size: sp(16)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    on_release: root.rematch()
+                RoundedButton:
+                    text: 'New Race'
+                    font_size: sp(16)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    on_release: root.new_race()
+
+            DangerButton:
+                text: 'Main Menu'
+                font_size: sp(16)
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(52)
+                on_release: root.go_menu()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LEAGUE RANK SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<LeagueRankScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(24)
+        spacing: dp(16)
+
+        Label:
+            text: 'League Rank'
+            font_size: sp(24)
+            bold: True
+            color: 0, 0.85, 1, 1
+            size_hint_y: None
+            height: dp(44)
+
+        SectionCard:
+            size_hint_y: None
+            height: dp(170)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                Label:
+                    id: current_tier_label
+                    text: 'Bronze'
+                    font_size: sp(36)
+                    bold: True
+                    color: 0.8, 0.55, 0.2, 1
+                    size_hint_y: None
+                    height: dp(50)
+                Label:
+                    id: avg_wpm_label
+                    text: 'Avg WPM: ---'
+                    font_size: sp(16)
+                    color: 0.8, 0.8, 0.8, 1
+                Label:
+                    id: avg_acc_label
+                    text: 'Avg Accuracy: ---'
+                    font_size: sp(16)
+                    color: 0.8, 0.8, 0.8, 1
+                Label:
+                    id: next_tier_label
+                    text: 'Next tier: ---'
+                    font_size: sp(14)
+                    color: 0.6, 0.9, 0.6, 1
+
+        Label:
+            text: 'TIER REQUIREMENTS'
+            font_size: sp(11)
+            color: 0.5, 0.6, 0.7, 1
+            size_hint_y: None
+            height: dp(24)
+
+        ScrollView:
+            BoxLayout:
+                id: tier_requirements_container
+                orientation: 'vertical'
+                spacing: dp(8)
+                size_hint_y: None
+                height: self.minimum_height
+
+        Widget:
+            size_hint_y: 1
+
+        DangerButton:
+            text: 'Back'
+            font_size: sp(14)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.go_back()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STATISTICS SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<StatsScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(24)
+            spacing: dp(14)
+            size_hint_y: None
+            height: self.minimum_height
+
+            Label:
+                text: 'Statistics'
+                font_size: sp(24)
+                bold: True
+                color: 0, 0.85, 1, 1
+                size_hint_y: None
+                height: dp(44)
+
+            SectionCard:
+                size_hint_y: None
+                height: dp(220)
+                GridLayout:
+                    cols: 2
+                    spacing: dp(10)
+
+                    Label:
+                        text: 'Best WPM:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_best_wpm
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 0, 0.85, 1, 1
+
+                    Label:
+                        text: 'Avg WPM:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_avg_wpm
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 1, 1, 1, 1
+
+                    Label:
+                        text: 'Total Words:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_total_words
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 1, 1, 1, 1
+
+                    Label:
+                        text: 'Best Accuracy:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_best_acc
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 0, 0.78, 0.33, 1
+
+                    Label:
+                        text: 'Games Played:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_games
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 1, 1, 1, 1
+
+                    Label:
+                        text: 'MP Wins:'
+                        font_size: sp(15)
+                        color: 0.7, 0.7, 0.7, 1
+                    Label:
+                        id: stat_mp_wins
+                        text: '---'
+                        font_size: sp(16)
+                        bold: True
+                        color: 1, 0.84, 0, 1
+
+            Label:
+                text: 'ACHIEVEMENTS'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(24)
+
+            BoxLayout:
+                id: achievements_container
+                orientation: 'vertical'
+                spacing: dp(8)
+                size_hint_y: None
+                height: self.minimum_height
+
+            DangerButton:
+                text: 'Back'
+                font_size: sp(14)
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(44)
+                on_release: root.go_back()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SETTINGS SCREEN
+# ─────────────────────────────────────────────────────────────────────────────
+
+<SettingsScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.04, 0.09, 0.16, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(24)
+            spacing: dp(16)
+            size_hint_y: None
+            height: self.minimum_height
+
+            Label:
+                text: 'Settings'
+                font_size: sp(24)
+                bold: True
+                color: 0, 0.85, 1, 1
+                size_hint_y: None
+                height: dp(44)
+
+            SectionCard:
+                size_hint_y: None
+                height: dp(230)
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(14)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(44)
+                        Label:
+                            text: 'Sound Effects'
+                            font_size: sp(16)
+                            color: 1, 1, 1, 1
+                        Switch:
+                            id: sound_switch
+                            active: True
+                            on_active: root.toggle_sound(self.active)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(44)
+                        Label:
+                            text: 'Vibration'
+                            font_size: sp(16)
+                            color: 1, 1, 1, 1
+                        Switch:
+                            id: vibration_switch
+                            active: True
+                            on_active: root.toggle_vibration(self.active)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(44)
+                        Label:
+                            text: 'Background Music'
+                            font_size: sp(16)
+                            color: 1, 1, 1, 1
+                        Switch:
+                            id: music_switch
+                            active: False
+                            on_active: root.toggle_music(self.active)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(44)
+                        Label:
+                            text: 'Accuracy Feedback'
+                            font_size: sp(16)
+                            color: 1, 1, 1, 1
+                        Spinner:
+                            id: acc_feedback_spinner
+                            text: 'Normal'
+                            values: ['Subtle', 'Normal', 'Prominent']
+                            size_hint_x: 0.45
+                            background_color: 0.1, 0.2, 0.35, 1
+                            color: 1, 1, 1, 1
+                            on_text: root.set_acc_feedback(self.text)
+
+            Label:
+                text: 'PLAYER NAME'
+                font_size: sp(11)
+                color: 0.5, 0.6, 0.7, 1
+                size_hint_y: None
+                height: dp(24)
+
+            SectionCard:
+                size_hint_y: None
+                height: dp(72)
+                TextInput:
+                    id: player_name_input
+                    hint_text: 'Enter your name...'
+                    font_size: sp(20)
+                    background_color: 0, 0, 0, 0
+                    foreground_color: 1, 1, 1, 1
+                    cursor_color: 0, 0.85, 1, 1
+                    hint_text_color: 0.3, 0.4, 0.5, 1
+                    multiline: False
+                    size_hint_y: None
+                    height: dp(46)
+                    on_text: root.update_player_name(self.text)
+
+            GreenButton:
+                text: 'Save Settings'
+                font_size: sp(16)
+                bold: True
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(52)
+                on_release: root.save_settings()
+
+            DangerButton:
+                text: 'Back'
+                font_size: sp(14)
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(44)
+                on_release: root.go_back()
